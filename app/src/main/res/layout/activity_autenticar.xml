@@ -7,10 +7,9 @@
     tools:context=".view.autenticar.AutenticarActivity">
 
     <data>
-
         <variable
-            name="viewModel"
-            type=".AutenticarActivity" />
+            android:name="viewModel"
+            android:type="com.github.kenyamoura.compreaqui.view.autenticar.AutenticarViewModel" />
     </data>
 
     <EditText
@@ -48,7 +47,6 @@
         app:layout_constraintTop_toBottomOf="@+id/email_txt" />
 
     <Button
-        android:onClick="onLoginClick"
         android:id="@+id/login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,6 +56,7 @@
         android:layout_marginStart="147dp"
         android:layout_marginTop="23dp"
         android:background="?attr/actionModeSplitBackground"
+        android:onClick="onLoginClick"
         android:text="@string/log_in"
         android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"

@@ -16,9 +16,9 @@ public class AutenticarViewModel {
     private AutenticarViewCallback viewCallback;
 
     // observables usados na activity
-    private ObservableField<String> emailField = new ObservableField<>();
-    private ObservableField<String> senhaField = new ObservableField<>();
-    private ObservableBoolean estadoCarregando = new ObservableBoolean();
+    public ObservableField<String> emailField = new ObservableField<>();
+    public ObservableField<String> senhaField = new ObservableField<>();
+    public ObservableBoolean estadoCarregando = new ObservableBoolean();
 
 
     public AutenticarViewModel(ClienteRepositorio clienteRepositorio, AutenticarViewCallback viewCallback) {
@@ -41,18 +41,6 @@ public class AutenticarViewModel {
                 .doOnSuccess(cliente -> viewCallback.onUsuarioAutenticado(cliente))
                 .doOnError(throwable -> viewCallback.onErroAoAutenticar())
                 .subscribe();;
-    }
-
-    public ObservableField<String> getEmailField() {
-        return emailField;
-    }
-
-    public ObservableField<String> getSenhaField() {
-        return senhaField;
-    }
-
-    public ObservableBoolean getEstadoCarregando() {
-        return estadoCarregando;
     }
 
     private boolean isBlank(String campo) {
