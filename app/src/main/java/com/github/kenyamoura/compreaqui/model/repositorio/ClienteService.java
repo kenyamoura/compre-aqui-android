@@ -3,8 +3,8 @@ package com.github.kenyamoura.compreaqui.model.repositorio;
 import com.github.kenyamoura.compreaqui.dominio.Cliente;
 import com.github.kenyamoura.compreaqui.dominio.Credenciais;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -18,14 +18,14 @@ public interface ClienteService {
     Observable<Cliente> autenticar(@Body Credenciais credenciais);
 
     @GET("/clientes/{email}")
-    Call<Cliente> buscar(@Path("email") String email);
+    Observable<Cliente> buscar(@Path("email") String email);
 
     @POST("/clientes/")
-    Call<Cliente> buscar(@Body Cliente novoCliente);
+    Observable<Cliente> cadastrar(@Body Cliente novoCliente);
 
     @PUT("/clientes/{email}")
-    Call<Cliente> atualizar(@Path("email") String email, @Body Cliente cliente);
+    Observable<Cliente> atualizar(@Path("email") String email, @Body Cliente cliente);
 
     @DELETE("/clientes/{email}")
-    Call<Void> apagar(@Path("email") String email);
+    Completable apagar(@Path("email") String email);
 }

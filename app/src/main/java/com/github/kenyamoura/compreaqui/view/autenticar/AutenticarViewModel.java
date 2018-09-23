@@ -7,8 +7,17 @@ import com.github.kenyamoura.compreaqui.dominio.Cliente;
 import com.github.kenyamoura.compreaqui.dominio.Credenciais;
 import com.github.kenyamoura.compreaqui.model.repositorio.ClienteRepositorio;
 
+import io.reactivex.MaybeSource;
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableMaybeObserver;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.github.kenyamoura.compreaqui.utils.StringUtils.isBlank;
 
 public class AutenticarViewModel {
 
@@ -18,8 +27,8 @@ public class AutenticarViewModel {
     // observables usados na activity
     public ObservableField<String> emailField = new ObservableField<>();
     public ObservableField<String> senhaField = new ObservableField<>();
-    public ObservableBoolean estadoCarregando = new ObservableBoolean();
 
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public AutenticarViewModel(ClienteRepositorio clienteRepositorio, AutenticarViewCallback viewCallback) {
         this.clienteRepositorio = clienteRepositorio;
@@ -31,19 +40,22 @@ public class AutenticarViewModel {
         String senha = senhaField.get();
 
         if (isBlank(email) || isBlank(senha)) {
-            // TODO: Adicionar validacao
+            viewCallback.onErroAoAutenticar(new RuntimeException("Preencha login e senha."));
             return;
         }
 
-        estadoCarregando.set(true);
         Credenciais credenciais = new Credenciais(email, senha);
-        clienteRepositorio.autenticar(credenciais)
-                .doOnSuccess(cliente -> viewCallback.onUsuarioAutenticado(cliente))
-                .doOnError(throwable -> viewCallback.onErroAoAutenticar())
-                .subscribe();;
+        Disposable disposable = clienteRepositorio.autenticar(credenciais)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnComplete(() -> viewCallback.onUsuarioAutenticado(null))
+                .subscribe(
+                        viewCallback::onUsuarioAutenticado,
+                        viewCallback::onErroAoAutenticar);
+        compositeDisposable.add(disposable);
     }
 
-    private boolean isBlank(String campo) {
-        return campo == null || campo.trim().isEmpty();
+    public void onFinalizar() {
+        compositeDisposable.clear();
     }
 }

@@ -2,6 +2,7 @@ package com.github.kenyamoura.compreaqui.dominio;
 
 public class Cliente {
     private String email;
+    private String senha;
     private String cpf;
     private String nome;
     private String endereco;
@@ -10,6 +11,7 @@ public class Cliente {
     private String telefone;
 
     public Cliente(String email,
+                   String senha,
                    String cpf,
                    String nome,
                    String endereco,
@@ -17,6 +19,7 @@ public class Cliente {
                    String municipio,
                    String telefone) {
         this.email = email;
+        this.senha = senha;
         this.cpf = cpf;
         this.nome = nome;
         this.endereco = endereco;
@@ -27,6 +30,10 @@ public class Cliente {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getSenha() {
+        return senha;
     }
 
     public String getCpf() {
