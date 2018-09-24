@@ -47,4 +47,8 @@ public class DependenciasFactory {
     public static PerfilViewModel criarPerfilViewModel(PerfilViewCallback viewCallback, String[] estados) {
         return new PerfilViewModel(clienteRepositorio, viewCallback, asList(estados));
     }
+
+    public static ClienteService criarService() {
+        return criarClienteService();
+    }
 }

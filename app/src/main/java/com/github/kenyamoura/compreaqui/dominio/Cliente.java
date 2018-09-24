@@ -1,5 +1,8 @@
 package com.github.kenyamoura.compreaqui.dominio;
 
+/**
+ * Classe utilizada para recuperar e atualizar um cliente.
+ */
 public class Cliente {
     private String email;
     private String senha;

@@ -5,71 +5,83 @@ import com.github.kenyamoura.compreaqui.dominio.Credenciais;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.MaybeSource;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.internal.operators.maybe.MaybeEmpty;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
-import retrofit2.Response;
 
-import static io.reactivex.android.schedulers.AndroidSchedulers.mainThread;
-import static io.reactivex.schedulers.Schedulers.io;
 
+/**
+ * Repositório com ações de acesso aos registros do cliente.
+ */
 public class ClienteRepositorio {
 
+    // Dependência da classe.
     private ClienteService clienteService;
 
     public ClienteRepositorio(ClienteService clienteService) {
         this.clienteService = clienteService;
     }
 
-
+    /**
+     * Método utilizado para autenticar assíncronamente.
+     *
+     * @param credenciais Credenciais do usuário com email e senha.
+     * @return Retorna um objeto observável do RxJava que pode retornar um cliente, um erro, ou vazio.
+     */
     public Maybe<Cliente> autenticar(Credenciais credenciais) {
         return clienteService.autenticar(credenciais)
-                .subscribeOn(io())
-                .observeOn(mainThread())
                 .onErrorResumeNext(e -> {
+                    /*
+                     * Trata erro 403, que ocorre quando ou e-mail ou senha está errada.
+                     */
                     if (e instanceof HttpException && ((HttpException) e).code() == 403)
                         return Observable.error(new RuntimeException("Email e/ou senha inválidos."));
                     else
                         return Observable.error(e);
                 })
-                .singleElement();
+                .singleElement(); // Requisita apenas um elemento.
     }
 
+    /**
+     * Método utilizado para criar um novo cliente assíncronamente.
+     *
+     * @param novoCliente Informações no novo cliente
+     * @return Retorna um objeto observável do RxJava que pode retornar um cliente, um erro, ou vazio.
+     */
     public Maybe<Cliente> cadastrar(Cliente novoCliente) {
         return clienteService.cadastrar(novoCliente)
-                .subscribeOn(io())
-                .observeOn(mainThread())
-                .onErrorResumeNext((Function<Throwable, ObservableSource<? extends Cliente>>) Observable::error)
                 .singleElement();
     }
 
+    /**
+     * Método utilizado para recuperar o cliente assíncronamente.
+     *
+     * @param email O e-mail do cliente.
+     * @return Retorna um objeto observável do RxJava que pode retornar um cliente, um erro, ou vazio.
+     */
     public Maybe<Cliente> buscar(String email) {
         return clienteService.buscar(email)
-                .subscribeOn(io())
-                .observeOn(mainThread())
-                .onErrorResumeNext((Function<Throwable, ObservableSource<? extends Cliente>>) Observable::error)
                 .singleElement();
     }
 
+    /**
+     * Método utilizado para atualizar um cliente assíncronamente.
+     *
+     * @param email   O e-mail pré-cadastrado do cliente.
+     * @param cliente As novas informações do cliente.
+     * @return Retorna um objeto observável do RxJava que pode retornar um cliente, um erro, ou vazio.
+     */
     public Maybe<Cliente> atualizar(String email, Cliente cliente) {
         return clienteService.atualizar(email, cliente)
-                .subscribeOn(io())
-                .observeOn(mainThread())
-                .onErrorResumeNext((Function<Throwable, ObservableSource<? extends Cliente>>) Observable::error)
                 .singleElement();
     }
 
+    /**
+     * Método utilizado para apagar a conta do cliente assíncronamente.
+     *
+     * @param email O e-mail do cliente que deseja-se apagar.
+     * @return Retorna um objeto observável do RxJava que pode retornar um erro ou vazio.
+     */
     public Completable destruirConta(String email) {
-        return clienteService.apagar(email)
-                .subscribeOn(io())
-                .observeOn(mainThread());
+        return clienteService.apagar(email);
     }
 }

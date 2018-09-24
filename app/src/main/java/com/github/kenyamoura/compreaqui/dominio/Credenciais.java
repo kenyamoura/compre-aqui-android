@@ -1,5 +1,8 @@
 package com.github.kenyamoura.compreaqui.dominio;
 
+/**
+ * Classe utilizada para autenticar-se.
+ */
 public class Credenciais {
     private String email;
     private String senha;

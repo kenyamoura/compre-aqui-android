@@ -22,7 +22,7 @@
                 android:value=".view.autenticar.AutenticarActivity" />
         </activity>
 
-        <activity android:name=".view.perfil.PerfilActivity">
+        <activity android:name=".view.perfil.PerfilActivity" android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

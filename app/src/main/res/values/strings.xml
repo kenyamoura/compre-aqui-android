@@ -32,13 +32,15 @@
     <string name="selecione_seu_estado">Selecione seu estado</string>
     <string name="erro">Oops!</string>
     <string name="salvando">Salvando…</string>
-    <string name="cadastro_sucesso">Cadastrado com sucesso!</string>
+    <string name="cadastro_sucesso">Parabéns! Seu cadastro foi realizado com sucesso.</string>
     <string name="faca_login">Faça o login.</string>
     <string name="apagar_conta">Apagar Conta</string>
     <string name="logout">Logout</string>
     <string name="perfil_salvo_com_sucesso">Perfil salvo com sucesso!</string>
     <string name="apagando_conta">Apangando conta…</string>
     <string name="autenticando">Autenticando…</string>
+    <string name="deseja_realmente_apagar_conta">Deseja realmente apagar a conta?</string>
+    <string name="confirmacao">Confirmação</string>
     <string-array name="estados_array">
         <item>Selecione seu estado</item>
         <item>Acre (AC)</item>
